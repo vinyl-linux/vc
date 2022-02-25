@@ -13,5 +13,6 @@ vc: bin/*.go bin/**/*.go go.mod go.sum
 	(cd bin && CGO_ENABLED=0 go build -ldflags="-s -w -X $(pkg).Ref=$(BUILD_REF) -X $(pkg).BuildUser=$(BUILT_BY) -X $(pkg).BuiltOn=$(BUILT_ON)" -trimpath -o ../$@)
 
 install: "$(BINDIR)/vc"
-$(BINDIR)/vc: vc
+
+"$(BINDIR)/vc": vc
 	install -m 0755 -o root $< $@
