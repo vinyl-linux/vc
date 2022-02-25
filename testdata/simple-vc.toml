@@ -1,0 +1,15 @@
+name = "My simple vc script"
+description = "Create some default users and config"
+
+[script]
+interpreter = "/bin/sh"   # Empty interpreter will download 'url', chmod +x it, and execute directly
+url = "https://example.com/installer-script.sh"
+# or, set the contents to run as 'body' - having both of these set should error
+body = '''
+#!/usr/bin/env bash
+#
+
+set -axe
+
+echo "Hello from vc!"
+'''
