@@ -81,8 +81,8 @@ func printStatus(id string, s vc.Script) {
 	fmt.Printf("Script %s (%s)\nStatus: %s\n",
 		id, s.RunAt, s.RunningState)
 
-	if s.Error != nil {
-		fmt.Println(s.Error)
+	if s.Error != "" {
+		fmt.Printf("Error: %s\n", s.Error)
 	}
 
 	if showLogs {

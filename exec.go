@@ -34,24 +34,30 @@ const (
 	ScriptRunningState_Failure
 )
 
-func (s *Script) Run() {
+func (s *Script) Run() (err error) {
 	var (
 		data   []byte
 		fn     string
 		output []byte
 	)
 
+	defer func() {
+		if err != nil {
+			s.Error = err.Error()
+		}
+	}()
+
 	if s.URL != nil {
-		data, s.Error = download(*s.URL)
-		if s.Error != nil {
+		data, err = download(*s.URL)
+		if err != nil {
 			return
 		}
 	} else {
 		data = []byte(*s.Body)
 	}
 
-	fn, s.Error = writedata(data)
-	if s.Error != nil {
+	fn, err = writedata(data)
+	if err != nil {
 		return
 	}
 
@@ -59,11 +65,11 @@ func (s *Script) Run() {
 	s.RunningState = ScriptRunningState_Started
 
 	c := exec.Command(*s.Interpreter, fn)
-	output, s.Error = c.CombinedOutput()
+	output, err = c.CombinedOutput()
 
 	s.Logs = strings.Split(string(output), "\n")
 
-	switch s.Error {
+	switch err {
 	case nil:
 		s.RunningState = ScriptRunningState_Success
 

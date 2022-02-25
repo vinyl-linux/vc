@@ -18,7 +18,7 @@ jobs:
       run: |
         make
         mkdir -pv vc-x86_64
-        cp vc Makefile vc-x86_64/
+        cp Makefile vc vc-x86_64/
         tar cvvjf vc-x86_64.tar.bz2 vc-x86_64
 
     - name: Release

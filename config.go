@@ -21,7 +21,7 @@ type Script struct {
 
 	RunningState ScriptRunningState `toml:"-" hash:"-"`
 	Logs         []string           `toml:"-" hash:"-"`
-	Error        error              `toml:"-" hash:"-"`
+	Error        string             `toml:"-" hash:"-"`
 	RunAt        time.Time          `toml:"-" hash:"-"`
 }
 

@@ -36,6 +36,8 @@ func (d Database) WriteDatabase(fn string) (err error) {
 		return
 	}
 
+	defer f.Close()
+
 	enc := gob.NewEncoder(f)
 
 	return enc.Encode(d)
