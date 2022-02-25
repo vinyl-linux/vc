@@ -1,7 +1,7 @@
 PREFIX ?= ""
 BINDIR ?= "$(PREFIX)/usr/bin"
 
-BUILT_ON := $(shell date --rfc-3339=seconds | sed 's/ /T/')
+BUILT_ON ?= $(shell date --rfc-3339=seconds | sed 's/ /T/')
 BUILT_BY := $(shell whoami)
 BUILD_REF := $(shell git symbolic-ref -q --short HEAD || git describe --tags --exact-match)
 
