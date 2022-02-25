@@ -1,0 +1,31 @@
+name: "CLA Assistant"
+on:
+  issue_comment:
+    types: [created]
+  pull_request_target:
+    types: [opened,closed,synchronize]
+
+jobs:
+  CLAssistant:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "CLA Assistant"
+        if: (github.event.comment.body == '/recheck' || github.event.comment.body == '/sign') || github.event_name == 'pull_request_target'
+        # Alpha Release
+        uses: cla-assistant/github-action@v2.0.3-alpha
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # the below token should have repo scope and must be manually added by you in the repository's secret
+          PERSONAL_ACCESS_TOKEN : ${{ secrets.CLA_ACCESS_TOKEN }}
+        with:
+          path-to-signatures: 'signatures/vc/cla.json'
+          path-to-document: 'https://github.com/cla-assistant/github-action/blob/master/SAPCLA.md' # e.g. a CLA or a DCO document
+          # branch should not be protected
+          branch: 'main'
+          allowlist: bot*
+
+          remote-organization-name: vinyl-linux
+          remote-repository-name:  governance
+          create-file-commit-message: 'initial CLA'
+          signed-commit-message: '$contributorName has signed the CLA in vinyl-linux/linux-utils (#$pullRequestNo)'
+          custom-pr-sign-comment: '/sign'
