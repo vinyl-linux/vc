@@ -2,6 +2,7 @@ package vc
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/BurntSushi/toml"
 	"github.com/cnf/structhash"
@@ -21,6 +22,7 @@ type Script struct {
 	RunningState ScriptRunningState `toml:"-" hash:"-"`
 	Logs         []string           `toml:"-" hash:"-"`
 	Error        error              `toml:"-" hash:"-"`
+	RunAt        time.Time          `toml:"-" hash:"-"`
 }
 
 func (s Script) Validate() error {
@@ -44,7 +46,7 @@ type Config struct {
 	Description string  `toml:"description"`
 	Script      *Script `toml:"script"`
 
-	sum string `toml:"-"`
+	Sum string `toml:"-"`
 }
 
 func LoadConfig(fn string) (c Config, err error) {
@@ -58,7 +60,7 @@ func LoadConfig(fn string) (c Config, err error) {
 		return
 	}
 
-	c.sum, err = structhash.Hash(c.Script, 1)
+	c.Sum, err = structhash.Hash(c.Script, 1)
 
 	return
 }

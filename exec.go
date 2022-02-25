@@ -7,14 +7,30 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 type ScriptRunningState uint8
 
+func (s ScriptRunningState) String() string {
+	switch s {
+	case ScriptRunningState_NotStarted:
+		return "not started"
+	case ScriptRunningState_Started:
+		return "started"
+	case ScriptRunningState_Success:
+		return "completed successfully"
+	case ScriptRunningState_Failure:
+		return "task failed"
+	}
+
+	return "unknown"
+}
+
 const (
 	ScriptRunningState_NotStarted ScriptRunningState = iota
 	ScriptRunningState_Started
-	ScriptRunningState_Succes
+	ScriptRunningState_Success
 	ScriptRunningState_Failure
 )
 
@@ -39,10 +55,21 @@ func (s *Script) Run() {
 		return
 	}
 
+	s.RunAt = time.Now()
+	s.RunningState = ScriptRunningState_Started
+
 	c := exec.Command(*s.Interpreter, fn)
 	output, s.Error = c.CombinedOutput()
 
 	s.Logs = strings.Split(string(output), "\n")
+
+	switch s.Error {
+	case nil:
+		s.RunningState = ScriptRunningState_Success
+
+	default:
+		s.RunningState = ScriptRunningState_Failure
+	}
 
 	return
 }
