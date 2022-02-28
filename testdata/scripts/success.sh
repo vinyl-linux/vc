@@ -1,3 +1,3 @@
 set -axe
 
-echo 'hello world!'
+echo hello world

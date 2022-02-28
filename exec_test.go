@@ -43,7 +43,7 @@ func TestScript_Run(t *testing.T) {
 		expectLog    []string
 		expectStatus string
 	}{
-		{"successful script", "testdata/scripts/success.sh", false, []string{"+ echo 'hello world!'", "hello world!", ""}, "completed successfully"},
+		{"successful script", "testdata/scripts/success.sh", false, []string{"+ echo hello world", "hello world", ""}, "completed successfully"},
 		{"failing script", "testdata/scripts/fail.sh", true, []string{"uh-oh", ""}, "task failed"},
 	} {
 		t.Run(test.name, func(t *testing.T) {
