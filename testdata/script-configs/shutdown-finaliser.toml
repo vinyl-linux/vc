@@ -1,0 +1,14 @@
+name = "My simple vc script"
+description = "Create some default users and config"
+finaliser = "shutdown"
+
+[script]
+interpreter = "/bin/sh"
+body = '''
+#!/usr/bin/env bash
+#
+
+set -axe
+
+echo "Hello from vc!"
+'''

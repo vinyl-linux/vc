@@ -49,13 +49,6 @@ var runCmd = &cobra.Command{
 			return
 		}
 
-		defer func() {
-			err = db.WriteDatabase(dbFile)
-			if err != nil {
-				panic(err)
-			}
-		}()
-
 		config, err := vc.LoadConfig(args[0])
 		if err != nil {
 			return
@@ -71,8 +64,16 @@ var runCmd = &cobra.Command{
 		err = config.Script.Run()
 
 		db[config.Sum] = *config.Script
+		writeErr := db.WriteDatabase(dbFile)
+		if err != nil {
+			panic(writeErr)
+		}
 
-		return
+		if err != nil {
+			return
+		}
+
+		return config.Finalise()
 	},
 }
 
