@@ -8,7 +8,16 @@ import (
 	"github.com/cnf/structhash"
 )
 
+type Finaliser uint8
+
+const (
+	Finaliser_Nothing Finaliser = iota
+	Finaliser_Reboot
+	Finaliser_Shutdown
+)
+
 var (
+	ErrMissingScript      = fmt.Errorf("missing script section")
 	ErrMissingInterpreter = fmt.Errorf("interpreter is either empty or unset")
 	ErrUrlOrBodyOnly      = fmt.Errorf("only one of url or body may be set at once")
 	ErrUrlAndBodyUnset    = fmt.Errorf("either script url or body must be set")
@@ -41,10 +50,29 @@ func (s Script) Validate() error {
 	return nil
 }
 
+func (f *Finaliser) UnmarshalText(text []byte) (err error) {
+	t := string(text)
+
+	switch t {
+	case "", "default", "nothing":
+		*f = Finaliser_Nothing
+	case "reboot":
+		*f = Finaliser_Reboot
+	case "shutdown":
+		*f = Finaliser_Shutdown
+	default:
+		err = fmt.Errorf("invalid type %q; must be in set (%q,%q,%q)",
+			t, "nothing", "reboot", "shutdown")
+	}
+
+	return
+}
+
 type Config struct {
-	Name        string  `toml:"name"`
-	Description string  `toml:"description"`
-	Script      *Script `toml:"script"`
+	Name        string    `toml:"name"`
+	Description string    `toml:"description"`
+	Script      *Script   `toml:"script"`
+	Finaliser   Finaliser `toml:"finaliser"`
 
 	Sum string `toml:"-"`
 }
@@ -52,6 +80,12 @@ type Config struct {
 func LoadConfig(fn string) (c Config, err error) {
 	_, err = toml.DecodeFile(fn, &c)
 	if err != nil {
+		return
+	}
+
+	if c.Script == nil {
+		err = ErrMissingScript
+
 		return
 	}
 
