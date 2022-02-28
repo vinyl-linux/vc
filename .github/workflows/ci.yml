@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+
+    - name: Build
+      run: make
+
+    - name: Test
+      run: |
+        go test -v -covermode=count -coverprofile=coverage.out
+
+    - name: gosec
+      run: |
+        go install github.com/securego/gosec/v2/cmd/gosec@latest
+        gosec .
+
+    - name: golangci-lint
+      run: |
+        go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.43.0
+        golangci-lint run --skip-files='.*_test.go'
+
+    - name: gokart
+      run: |
+        go install github.com/praetorian-inc/gokart@latest
+        gokart scan
+
+
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+
+    - uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+
+    - name: Test
+      run: |
+        go test -v -covermode=count -coverprofile=coverage.out
+
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
