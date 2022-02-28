@@ -12,7 +12,7 @@ type Database map[string]Script
 
 // load from file
 func LoadDatabase(fn string) (d Database, err error) {
-	f, err := os.Open(fn)
+	f, err := os.Open(fn) // #nosec G304
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
 			d = make(Database)
@@ -31,12 +31,12 @@ func LoadDatabase(fn string) (d Database, err error) {
 }
 
 func (d Database) WriteDatabase(fn string) (err error) {
-	f, err := os.Create(fn)
+	f, err := os.Create(fn) // #nosec G304
 	if err != nil {
 		return
 	}
 
-	defer f.Close()
+	defer f.Close() // #nosec G307
 
 	enc := gob.NewEncoder(f)
 

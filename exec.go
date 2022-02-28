@@ -10,6 +10,14 @@ import (
 	"time"
 )
 
+var (
+	client httpClient = http.DefaultClient
+)
+
+type httpClient interface {
+	Get(string) (*http.Response, error)
+}
+
 type ScriptRunningState uint8
 
 func (s ScriptRunningState) String() string {
@@ -64,7 +72,7 @@ func (s *Script) Run() (err error) {
 	s.RunAt = time.Now()
 	s.RunningState = ScriptRunningState_Started
 
-	c := exec.Command(*s.Interpreter, fn)
+	c := exec.Command(*s.Interpreter, fn) // #nosec G204
 	output, err = c.CombinedOutput()
 
 	s.Logs = strings.Split(string(output), "\n")
@@ -81,7 +89,7 @@ func (s *Script) Run() (err error) {
 }
 
 func download(url string) (data []byte, err error) {
-	resp, err := http.Get(url)
+	resp, err := client.Get(url)
 	if err != nil {
 		return
 	}
@@ -109,7 +117,7 @@ func writedata(data []byte) (fn string, err error) {
 	}
 
 	fn = f.Name()
-	defer f.Close()
+	defer f.Close() // #nosec G307
 
 	_, err = f.Write(data)
 

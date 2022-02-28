@@ -25,7 +25,7 @@ func (c Config) Finalise() error {
 	case Finaliser_Reboot:
 		cmd = finaliserRebootCommand
 	case Finaliser_Shutdown:
-		cmd = finaliserRebootCommand
+		cmd = finaliserShutdownCommand
 	}
 
 	args, err := shlex.Split(cmd)
