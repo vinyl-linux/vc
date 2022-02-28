@@ -1,8 +1,8 @@
 # vc
 
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=vinyl-linux_vinit&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=vinyl-linux_vinit)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=vinyl-linux_vinit&metric=security_rating)](https://sonarcloud.io/dashboard?id=vinyl-linux_vinit)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=vinyl-linux_vinit&metric=sqale_index)](https://sonarcloud.io/dashboard?id=vinyl-linux_vinit)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=vinyl-linux_vc&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=vinyl-linux_vc)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=vinyl-linux_vc&metric=security_rating)](https://sonarcloud.io/dashboard?id=vinyl-linux_vc)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=vinyl-linux_vc&metric=sqale_index)](https://sonarcloud.io/dashboard?id=vinyl-linux_vc)
 
 `vc` is a `cloud-init`-alike tool for running a script once, and only once, to bootstrap a server. Unlike `cloud-init`, or similar tools, it is distributed as a statically compiled binary and does sod-all beyond run a script and store the output.
 
