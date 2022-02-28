@@ -68,8 +68,10 @@ func TestLoadConfig(t *testing.T) {
 			// script has stuff in it
 			c.Script = nil
 
-			if !reflect.DeepEqual(test.expect, c) {
-				t.Errorf("expected:\n%#v\nreceived:\n%#v", test.expect, c)
+			if !test.expectError {
+				if !reflect.DeepEqual(test.expect, c) {
+					t.Errorf("expected:\n%#v\nreceived:\n%#v", test.expect, c)
+				}
 			}
 		})
 	}
