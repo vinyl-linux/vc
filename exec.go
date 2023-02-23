@@ -100,7 +100,7 @@ func download(url string) (data []byte, err error) {
 		return
 	}
 
-	defer resp.Body.Close()
+	defer resp.Body.Close() // #nosec: G307
 
 	b := bytes.Buffer{}
 	_, err = b.ReadFrom(resp.Body)
