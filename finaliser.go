@@ -45,6 +45,7 @@ func (c Config) Finalise() error {
 		binaryArgs = args[1:]
 	}
 
+	// #nosec: G204
 	command := exec.Command(binary, binaryArgs...)
 
 	return command.Run()
