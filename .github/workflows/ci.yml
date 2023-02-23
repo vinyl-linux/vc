@@ -13,14 +13,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-    - uses: actions/setup-go@v2
+    - uses: actions/setup-go@v3
       with:
-        go-version: 1.20
+        go-version: '>=1.20.0'
 
     - name: Build
-      run: make
+      run: |
+        make
 
     - name: Test
       run: |
@@ -46,14 +47,14 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.triggering_actor != 'dependabot[bot]' }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
 
-    - uses: actions/setup-go@v2
+    - uses: actions/setup-go@v3
       with:
-        go-version: 1.20
+        go-version: '>=1.20.0'
 
     - name: Test
       run: |
