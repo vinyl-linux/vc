@@ -44,6 +44,7 @@ jobs:
 
   sonarcloud:
     runs-on: ubuntu-latest
+    if: ${{ github.triggering_actor != 'dependabot[bot]' }}
     steps:
     - uses: actions/checkout@v2
       with:
