@@ -3,7 +3,7 @@ module github.com/vinyl-linux/vc
 go 1.17
 
 require (
-	github.com/BurntSushi/toml v1.0.0
+	github.com/BurntSushi/toml v1.2.1
 	github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
 	github.com/spf13/cobra v1.3.0
